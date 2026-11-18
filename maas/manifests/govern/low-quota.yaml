@@ -1,0 +1,21 @@
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSSubscription
+metadata:
+  name: demo-low-quota
+  namespace: models-as-a-service
+  labels:
+    app.kubernetes.io/part-of: maas-demo
+  annotations:
+    openshift.io/description: 'Test pédagogique du quota : 50 tokens par minute.'
+spec:
+  owner:
+    groups:
+    - name: demo-team
+    users: []
+  priority: 1
+  modelRefs:
+  - name: demo-llm
+    namespace: maas-demo
+    tokenRateLimits:
+    - limit: 50
+      window: 1m

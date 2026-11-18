@@ -1,0 +1,22 @@
+apiVersion: maas.opendatahub.io/v1alpha1
+kind: MaaSSubscription
+metadata:
+  name: demo-quota
+  namespace: models-as-a-service
+  labels:
+    app.kubernetes.io/part-of: maas-demo
+  annotations:
+    openshift.io/description: 'Équipe Data Science : 2 000 tokens par minute pour
+      notre assistant.'
+spec:
+  owner:
+    groups:
+    - name: demo-team
+    users: []
+  priority: 10
+  modelRefs:
+  - name: demo-llm
+    namespace: maas-demo
+    tokenRateLimits:
+    - limit: 2000
+      window: 1m
