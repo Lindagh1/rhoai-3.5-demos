@@ -122,7 +122,7 @@ Dans le terminal préparé, depuis le dossier `maas`, lancer **make call** : mon
 
 **À dire :** « Je distingue la qualité du modèle, mesurée sur des données de test, de son fonctionnement : appels, délais, erreurs et consommation. Une mesure de tokens ne constitue pas une facture. »
 
-**Phrase de fin :** « Nous avons appris une prévision, utilisé un LLM pour produire du texte, puis montré comment partager une API avec des règles d’accès et du suivi. »
+**Phrase de fin :** « Nous avons calculé une prévision, utilisé un LLM pour produire du texte, puis montré comment partager une API avec des règles d’accès et du suivi. »
 
 Références : [9] [Utiliser MaaS](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/govern_llm_access_with_models-as-a-service/use-models-as-a-service_maas-deploy) ; [10] [Fonctions Technology Preview, dont certaines fonctions MaaS et d’observabilité](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/release_notes/technology-preview-features_relnotes).
 
