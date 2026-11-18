@@ -3,7 +3,7 @@
 # EXISTING dashboard-created Workbench (Notebook CR) as an env var, without
 # ever printing the key value.
 #
-# Real finding this script codifies (see GUIDE.md §9,
+# Real finding this script codifies (see GUIDE.md — Appeler le modèle sans session admin,
 # "Workbench 'Environment variables' step... doesn't actually apply"): the
 # Create-workbench wizard's own "Environment variables" step was observed to
 # silently drop the variable on this RHOAI 3.5.2 build -- no Secret was

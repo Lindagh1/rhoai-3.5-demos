@@ -6,4 +6,4 @@ for step in publish/00-audit publish/10-prerequisites publish/20-enable-platform
  bash "scripts/$step.sh"
 done
 oc apply -f manifests/model/hardware-profile.yaml
-printf '\nPlateforme prête. Commencer FEUILLE-DEMO.md pour créer le projet et le modèle.\n'
+printf '\nPlateforme prête. Voir avance/DEMO-GPU.md pour la création manuelle avec GPU, ou ../setup.sh --demo maas pour le parcours CPU.\n'

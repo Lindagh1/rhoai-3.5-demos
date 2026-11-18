@@ -1,4 +1,6 @@
-# Préparer et présenter MaaS
+# Préparer et diagnostiquer MaaS
+
+[Accueil MaaS](README.md) · [Fiche pour présenter](FEUILLE-DEMO.md) · [Tous les guides](../docs/README.md)
 
 Le kit publie par défaut un **modèle simulé sur CPU**. Les réponses sont synthétiques ; la publication MaaS, les clés, les contrôles d’accès, les quotas et les mesures d’usage fonctionnent réellement. Aucun GPU n’est réservé et les autres modèles ne sont pas arrêtés.
 
@@ -16,6 +18,8 @@ Depuis la racine du dépôt :
 Le script réutilise les ressources existantes. Il conserve le mot de passe PostgreSQL, la base des clés API, les volumes et l’identité `demo-user`. Il ne crée aucune clé personnelle automatiquement. Les sources de cette partie proviennent de [rhoai-maas-demo](https://github.com/Lindagh1/rhoai-maas-demo), avec les corrections validées sur la deuxième sandbox.
 
 ## Identité et clés
+
+**Fournisseur d’identité externe :** le setup s’arrête avant de le modifier. Faire fournir un compte non administrateur et son rattachement au groupe `demo-team` par l’administrateur, puis poursuivre la configuration MaaS manuellement avec les scripts ciblés. Cette adaptation à un IdP d’entreprise n’a pas été validée par le kit ; relancer aveuglément le bootstrap ne la résout pas.
 
 Le bootstrap utilise un HTPasswd existant ou le Keycloak intégré d’une sandbox dédiée. Avec un IdP d’entreprise, il s’arrête : utiliser une identité fournie par l’administrateur. Sans IdP, `ADD_HTPASSWD_IDP=yes ./setup.sh --demo maas` permet d’ajouter celui de démonstration.
 
@@ -36,39 +40,15 @@ Conserver **un clone local par sandbox** pour séparer ses mots de passe et clé
 
 Les fonctions d’observabilité marquées Technology Preview restent présentées comme telles. Le tableau « MaaS démo » est une extension Perses livrée par le dépôt et alimentée par les compteurs réels ; ce n’est pas une fonction de facturation.
 
-## 5. Le modèle réel
+## Variante avec un vrai modèle GPU
 
-Source : `hf://Qwen/Qwen2.5-0.5B-Instruct`. Le manifeste est `manifests/model/llm.yaml` et la publication `manifests/publish/model-ref.yaml`.
+Le parcours principal reste la simulation CPU. Pour déployer Qwen sur une sandbox avec un GPU libre, consulter la [variante avancée](avance/DEMO-GPU.md). Cette variante change le backend de `maas-demo/demo-llm` ; elle n’est pas nécessaire pour présenter les accès, les quotas et le suivi. Le Llama existant est conservé actif dans le parcours actuel.
 
-La mémoire de contexte est limitée à 2 048 tokens et vLLM utilise 60 % de la mémoire GPU. `--enforce-eager` évite une compilation longue pour cette démonstration. Le modèle de 0,5 milliard de paramètres illustre le parcours ; il ne sert pas à comparer la qualité des grands modèles.
-
-```bash
-oc get llminferenceservice demo-llm -n maas-demo
-oc rollout status deployment/demo-llm-kserve -n maas-demo --timeout=900s
-oc get maasmodelref demo-llm -n maas-demo
-```
-
-La publication peut attendre la gouvernance avant d'afficher son état global Ready. La disponibilité du moteur et l'association souscription/autorisation sont deux vérifications distinctes.
-
-### GPU occupé
-
-Le script refuse le mode réel si aucun GPU n'est disponible. Il ne remplace pas automatiquement le LLM par un simulateur. Arrêter explicitement le modèle occupant le GPU depuis son bouton Stop, ou choisir une autre sandbox.
-
-Sur la sandbox utilisée pour cette validation, avec accord de l'utilisateur, `my-first-model/llama-32-3b-instruct` a été arrêté via `serving.kserve.io/stop=true`. Pour le reprendre, arrêter d'abord `demo-llm`, puis retirer cette annotation ou utiliser Start dans l'interface. Ne démarrer qu'un modèle GPU à la fois sur ce cluster.
-
-### Répétition CPU
-
-```bash
-MODEL_MODE=simulator make demo
-```
-
-Ce mode charge `llm-simulator.yaml`. Dire explicitement : « Ici je répète les mécanismes MaaS avec des réponses synthétiques. » Utiliser explicitement `MODEL_MODE=real make demo` pour le vrai modèle.
-
-## 6. La gouvernance et les clés
+## Gouvernance et clés
 
 La souscription `demo-quota` associe `demo-team` au modèle `maas-demo/demo-llm`, avec une limite de 2 000 tokens par minute. L'autorisation `demo-access` permet à ce même groupe d'atteindre le modèle par la gateway. Les deux sont nécessaires.
 
-L'interface propose **Create authorization policy** lors de la création d'une souscription. Si elle est cochée, elle crée une policy associée, généralement nommée `demo-quota-policy`. Pour conserver les noms exacts du kit, la feuille recommande de la décocher et de créer `demo-access` dans l'onglet suivant. Ne pas créer les deux policies en parallèle : une policy restante empêcherait de démontrer un refus d'accès.
+L'interface propose **Create authorization policy** lors de la création d'une souscription. Si elle est cochée, elle crée une policy associée, généralement nommée `demo-quota-policy`. Pour une création manuelle selon la variante GPU, la décocher et créer `demo-access` dans l’onglet suivant. Dans le parcours CPU, le setup a déjà créé ces ressources : les ouvrir sans les recréer. Ne pas créer les deux policies en parallèle : une policy restante empêcherait de démontrer un refus d'accès.
 
 ```bash
 make govern
@@ -77,7 +57,7 @@ make govern-verify
 
 En tant que `demo-user` : **Gen AI studio → API keys → Create API key**. Choisir `demo-quota`, nommer la clé `demo-notebook`, choisir une expiration adaptée à la sandbox et enregistrer la valeur affichée une seule fois. `make save-key` permet sa capture locale. Une seconde clé liée à `demo-low-quota` sert exclusivement au test 429.
 
-## 7. Appeler le modèle sans session admin
+## Appeler le modèle sans session admin
 
 Dans un terminal utilisateur ou un workbench, disposer uniquement de `scripts/client.py`, de `curl`, de Python et du fichier de clé. Copier l'URL affichée par `make endpoints` depuis la préparation admin.
 
@@ -95,7 +75,7 @@ make quota-test
 
 Le petit quota est volontairement inférieur à la consommation d'un appel. Le premier appel peut réussir, puis le suivant être refusé : la comptabilisation tient compte des tokens de la réponse. Un quota de tokens n'est pas une limite stricte sur le nombre d'appels ni une facturation.
 
-## 8. L'observabilité à montrer
+## Observabilité
 
 Admin : **Observe & monitor → Dashboard → MaaS démo**.
 
@@ -113,22 +93,25 @@ Cette commande admin lit les compteurs à travers un port-forward authentifié e
 
 Le test optionnel `make show-denials` retire temporairement `demo-team` des bénéficiaires de la policy, attend un refus, restaure les bénéficiaires exacts puis vérifie le retour en 200. Il attend jusqu'à deux minutes par phase pour laisser passer le cache de 60 secondes. Ne pas le lancer en parallèle de `make demo`. Sur cette build, supprimer complètement la policy a laissé une règle obsolète dans la gateway : ne pas utiliser cette suppression comme preuve de révocation. Ce défaut observé est détaillé dans [validation du kit](../docs/VALIDATION.md).
 
-## 9. Rejouer et diagnostiquer
+## Diagnostiquer
 
-```bash
-make demo                    # remettre l'état déclaratif complet
-make live-reset CONFIRM=yes  # retire modèle/publication/gouvernance de démo
-```
+Pour remettre la configuration déclarative du kit, relancer `../setup.sh --demo maas` depuis ce dossier.
+
+**Remise à zéro volontaire, hors du parcours de présentation :** `make live-reset CONFIRM=yes` retire le modèle, la publication et la gouvernance de démonstration. Cette commande modifie la démo et n’est pas nécessaire pour la rejouer.
 
 Le reset conserve le projet, la plateforme et la base des clés. Il ne supprime aucun PVC partagé ni gateway. Les clés existantes peuvent redevenir utilisables si la même souscription est recréée : les révoquer explicitement si l'objectif est de repartir sans aucune clé. Pour montrer aussi la création d'un projet vide, privilégier une nouvelle sandbox.
 
-**Pending GPU :** vérifier les pods demandant `nvidia.com/gpu` et arrêter explicitement le modèle concurrent. **ImagePullBackOff :** vérifier l'accès au registre et le pull secret. **403 :** vérifier la clé, son expiration, le groupe, la souscription et la policy. **429 :** attendre la nouvelle fenêtre ou utiliser la clé principale. **Catalogue vide :** vérifier que le projet possède le label `maas.opendatahub.io/gateway-access=true` et que MaaSModelRef est publié.
+**Pending GPU :** concerne la variante avancée. Vérifier la capacité disponible et utiliser une autre sandbox si le GPU doit rester occupé ; le parcours principal fonctionne sur CPU. **ImagePullBackOff :** vérifier l'accès au registre et le pull secret. **403 :** vérifier la clé, son expiration, le groupe, la souscription et la policy. **429 :** attendre la nouvelle fenêtre ou utiliser la clé principale. **Catalogue vide :** vérifier que le projet possède le label `maas.opendatahub.io/gateway-access=true` et que MaaSModelRef est publié.
 
 **TLS intermittent :** vérifier les endpoints du Service de la gateway. Sur la sandbox historique, deux Deployments issus d'un changement de GatewayClass partageaient le même sélecteur ; l'ancien recevait encore du trafic. Il a été réduit à zéro. Cette migration n'existe pas normalement sur une sandbox neuve. Le client réessaie uniquement les échecs de handshake TLS, avant envoi d'une requête HTTP ; il ne répète pas automatiquement une inférence dont la réponse serait perdue.
 
-## 10. Sources et périmètre de validation
+## Sources et périmètre de validation
 
 - [Red Hat : gouverner les accès LLM avec MaaS, 3.5](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/govern_llm_access_with_models-as-a-service/)
 - [Red Hat : observabilité OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/managing_openshift_ai/managing-observability_managing-rhoai)
 - [Modèle Qwen public](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
 - [API MaaS upstream](https://github.com/opendatahub-io/models-as-a-service/blob/main/maas-api/openapi3.yaml)
+
+## Générer des fiches PDF locales
+
+Depuis `maas`, `make pdf` produit les guides actuels dans `output/pdf/` avec le module Python `markdown` et Chrome ou Chromium disponibles. Pour un support avancé, utiliser `bash scripts/generate_pdf.sh avance/DEMO-GPU.md`. Ces sorties restent locales et doivent être vérifiées visuellement avant diffusion.

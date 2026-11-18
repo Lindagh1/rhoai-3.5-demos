@@ -7,7 +7,7 @@
 # existing, independently idempotent scripts in this repo -- it does not
 # duplicate their logic. Every step it calls is itself safe to re-run.
 #
-# What this script does NOT do, by design (see GUIDE.md sections 4 et 6):
+# What this script does NOT do, by design (see GUIDE.md — Identité et clés):
 #   - It does not create the end-user's API keys (Scenario C) -- that is a
 #     genuine non-admin dashboard action, which is exactly the point of the
 #     demo. API-based key creation is also possible with the user identity.
@@ -96,7 +96,7 @@ echo "=============================================="
 ok "Automated redeployment complete."
 echo "=============================================="
 echo
-echo "Remaining MANUAL steps (by design — see GUIDE.md sections 4 et 6):"
+echo "Remaining MANUAL steps (by design — see GUIDE.md — Identité et clés):"
 echo
 echo "  1. Log in to the RHOAI dashboard as the demo end-user"
 echo "     (username: ${DEMO_USER:-demo-user}; password in"

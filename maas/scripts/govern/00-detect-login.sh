@@ -39,7 +39,7 @@ case "$STRATEGY" in
     warn "Keycloak this script can safely administer (external issuer, or Keycloak Operator/CR not found)."
     echo "  -> This is very likely an enterprise IdP (e.g. Red Hat SSO, Entra ID, Okta) shared beyond this sandbox."
     echo "  -> 01-create-test-identity.sh will REFUSE to mutate it and will print a manual procedure instead."
-    echo "     See GUIDE.md §11.5 (external OIDC path)."
+    echo "     See GUIDE.md — Identité et clés (external OIDC path)."
     ;;
   none)
     warn "No identityProviders configured on oauth/cluster (only kubeadmin / SA tokens, or cluster-bootstrap state)."

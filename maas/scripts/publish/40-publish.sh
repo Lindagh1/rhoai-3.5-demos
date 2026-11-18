@@ -41,7 +41,7 @@ info "Waiting for MaaSModelRef RuntimeReady (backend healthy) — up to 3 min...
 # NOTE: on RHOAI 3.5.2, MaaSModelRef.status.phase only reaches "Ready" once a
 # MaaSSubscription + MaaSAuthPolicy pair exists (Gouverner's governance). Until
 # then it legitimately stays "Pending" with GovernanceAttached=False — that
-# is documented, expected behaviour (see GUIDE.md §9 and scripts/publish/50-verify.sh,
+# is documented, expected behaviour (see GUIDE.md — Gouvernance et clés and scripts/publish/50-verify.sh,
 # which treats it as an "expected Gouverner blocker", not a failure). This stage
 # (Publier's publication proof) must NOT hard-require full Ready, otherwise the
 # single-command bootstrap can never reach Gouverner on a fresh sandbox.

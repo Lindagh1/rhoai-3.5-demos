@@ -40,6 +40,8 @@ Cinq tests couvrent la préservation des champs injectés par les webhooks, la s
 
 Les contrôles vérifient également la syntaxe Python/Bash, la lecture JSON/YAML, les notebooks sans sorties et les motifs de secrets. Avant publication, les fichiers sélectionnés et le texte du PDF ont été comparés aux identifiants privés connus de la préparation : aucune correspondance. Les journaux bruts et fichiers d’accès sont exclus du dépôt.
 
+Après réorganisation des guides, un contrôle supplémentaire vérifie les chemins et ancres des liens Markdown internes dans GitHub Actions. Les liens externes restent des références documentaires, non testées par ce contrôle. Les chemins des scripts d’installation, manifestes et notebooks ont été conservés ; cette réorganisation n’a pas relancé de déploiement sur le cluster.
+
 ## Limites de cette validation
 
 L’installation prédictive a été testée dans **un projet neuf sur le cluster disponible**. MaaS a été réappliqué sur sa plateforme déjà installée. La commande complète n’a pas encore été testée sur un troisième cluster entièrement neuf : les catalogues, certificats, registres, capacités et fournisseur d’identité peuvent y demander un ajustement.

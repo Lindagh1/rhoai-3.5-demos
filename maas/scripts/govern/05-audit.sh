@@ -47,7 +47,7 @@ case "$STRATEGY" in
     fi
     ;;
   *)
-    warn "Strategy '$STRATEGY' — see GUIDE.md §11.5 for the manual procedure."
+    warn "Strategy '$STRATEGY' — see GUIDE.md — Identité et clés for the manual procedure."
     ;;
 esac
 

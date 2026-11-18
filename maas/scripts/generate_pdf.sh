@@ -2,6 +2,7 @@
 # Convert Markdown guide(s) to styled PDF via Chrome headless.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.." || exit 1
+mkdir -p output/pdf
 
 CHROME="${CHROME:-google-chrome}"
 if ! command -v "$CHROME" &>/dev/null; then
@@ -10,7 +11,7 @@ fi
 
 md_to_pdf() {
   local src="$1"
-  local dst="${2:-${src%.md}.pdf}"
+  local dst="${2:-output/pdf/$(basename "${src%.md}").pdf}"
   local title
   title=$(basename "$src" .md | tr '_-' ' ')
 
@@ -24,7 +25,7 @@ body = markdown.markdown(
     text,
     extensions=["tables", "fenced_code", "toc", "sane_lists"],
 )
-body_class = "demo-sheet" if pathlib.Path(src).stem in ("FEUILLE-DEMO", "VIDEO-DEMO") else ""
+body_class = "demo-sheet" if pathlib.Path(src).stem in ("FEUILLE-DEMO", "DEMO-GPU", "VIDEO-GPU") else ""
 html = f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -84,9 +85,8 @@ PY
 }
 
 if [[ $# -eq 0 ]]; then
-  md_to_pdf GUIDE.md GUIDE.pdf
-  md_to_pdf FEUILLE-DEMO.md FEUILLE-DEMO.pdf
-  md_to_pdf VIDEO-DEMO.md VIDEO-DEMO.pdf
+  md_to_pdf GUIDE.md
+  md_to_pdf FEUILLE-DEMO.md
 else
   for f in "$@"; do
     md_to_pdf "$f"

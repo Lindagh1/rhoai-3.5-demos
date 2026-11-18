@@ -130,7 +130,7 @@ print(json.dumps({
     err "An external OIDC provider is configured that this script will NOT administer automatically"
     err "(not a sandbox-scoped in-cluster Keycloak — looks like shared/enterprise IdP infrastructure)."
     echo
-    echo "BLOCKED — manual procedure required. See GUIDE.md section 4 for:"
+    echo "BLOCKED — manual procedure required. See GUIDE.md — Identité et clés for:"
     echo "  - how to request/create a non-admin test account in that external IdP,"
     echo "  - how group-claim mapping needs to be verified before MaaS subscriptions can target a Group,"
     echo "  - this external-IdP path is not validated on this sandbox."

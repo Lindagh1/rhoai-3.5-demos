@@ -1,4 +1,8 @@
-# Réaliser une vidéo MaaS sans son
+# Filmer la variante MaaS GPU sans son
+
+[Variante GPU](DEMO-GPU.md) · [Parcours CPU recommandé](../FEUILLE-DEMO.md)
+
+Ce scénario filme la variante Qwen sur GPU. Il est distinct de la démo CPU installée par défaut.
 
 **Une vidéo lisible, avec de vrais gestes et des textes courts pour guider le spectateur.** Viser 8 à 10 minutes après montage, à partir d'une capture plus longue. Garder les étapes de remplissage des formulaires ; raccourcir les chargements et les hésitations.
 
@@ -43,7 +47,7 @@ Le choix d'une source et l'assistant sont décrits dans le [démarrage OBS](http
 
 **Pour la clé API :** filmer le formulaire rempli, puis arrêter l'enregistrement **avant** de cliquer sur **Create API key**, car sa valeur apparaîtra ensuite. Créer et copier la clé hors capture, fermer la fenêtre qui l'affiche, puis reprendre sur la liste des clés actives. Ajouter le texte **« Clé créée et copiée hors enregistrement »**. Filmer ensuite `make save-key` : son collage est masqué. Ne jamais ouvrir le fichier de clé à l'écran.
 
-La sandbox validée contient déjà les ressources de démo. Pour filmer leur création réelle, préparer l'état de départ décrit dans la [feuille de démo](https://github.com/Lindagh1/rhoai-maas-demo/blob/codex/maas-demo-pedagogique/FEUILLE-DEMO.md). Une vidéo de création doit montrer les champs, la validation et le résultat ; une simple inspection d'objets existants doit être annoncée comme telle.
+La sandbox validée contient déjà les ressources de démo. Pour filmer leur création réelle, préparer l'état de départ décrit dans la [feuille de démo](DEMO-GPU.md). Une vidéo de création doit montrer les champs, la validation et le résultat ; une simple inspection d'objets existants doit être annoncée comme telle.
 
 ## Suivre le scénario et ajouter les textes
 
