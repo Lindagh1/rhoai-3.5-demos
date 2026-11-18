@@ -71,6 +71,8 @@ Conserver **un clone local par sandbox** pour séparer les fichiers privés MaaS
 
 ## Fichiers utiles
 
+- [Présenter OpenShift AI en 20 minutes](docs/PRESENTER-OPENSHIFT-AI-3.5.md) et [fiche PDF](docs/guide-presentation-openshift-ai-3.5.pdf) : console, prédictif, génératif, MaaS.
+- [État de la plateforme et compléments utiles](docs/ETAT-PLATEFORME-PRESENTATION.md) : fonctions actives, registre à créer, MLflow et traces à préparer.
 - [Guide ventes](ventes/LIRE-MOI.md) et [fiche PDF de la répétition initiale](ventes/guides/guide-demo-ventes.pdf).
 - [Guide MaaS](maas/GUIDE.md) et [fiches de présentation](maas/FEUILLE-DEMO.md).
 - `ventes/manifests`, `ventes/pipelines`, `maas/manifests` : ressources et sources reproductibles.

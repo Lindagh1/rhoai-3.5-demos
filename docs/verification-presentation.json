@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-18",
+  "version": "3.5.3",
+  "cluster_config_modified": false,
+  "model_registry_instances": 0,
+  "mlflow_ready": "False",
+  "playground_generation_http_status": 200,
+  "tested_model": "llama-32-3b-instruct",
+  "generation_via": "existing OGX backend Responses API",
+  "playground_browser_flow_tested": false,
+  "new_document_rag_tested": false,
+  "predictive_workbench_ready": "True",
+  "predictive_pipeline_server_ready": "True",
+  "maas_simulation": true,
+  "maas_calls_retested_this_audit": false,
+  "maas_and_predictive_end_to_end_evidence": "VALIDATION.md"
+}
